@@ -15,14 +15,14 @@ const productController = {
     }).then(products => {
       return Cart.findByPk(req.session.cartId, { include: ['products'] })
       .then(cart => {
-        cart = cart || { products: [] }
-        let totalPrice = cart.products.length > 0 ? 
+        cart = cart ? cart.toJSON() : { products: [] }
+        const totalPrice = cart.products.length > 0 ? 
           cart.products.map(d => d.price * d.CartItem.quantity)
           .reduce((a, b) => a + b) : 0
 
         return res.render('products', {
           products,
-          cart: cart.toJSON(),
+          cart,
           totalPrice,
         })
       })
