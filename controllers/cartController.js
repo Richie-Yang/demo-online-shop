@@ -8,7 +8,6 @@ const PAGE_OFFSET = 0
 const cartController = {
   getCart: (req, res) => {
     const cartId = req.session.cartId || 0
-    console.log(cartId)
 
     return Cart.findOrCreate({
       where: { id: cartId }
@@ -63,6 +62,35 @@ const cartController = {
             })
           })
       })
+    })
+  },
+
+  addCartItem: (req, res) => {
+    CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.update({
+        quantity: cartItem.quantity + 1,
+      })
+        .then((cartItem) => {
+          return res.redirect('back')
+        })
+    })
+  },
+  subCartItem: (req, res) => {
+    CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.update({
+        quantity: cartItem.quantity - 1 >= 1 ? cartItem.quantity - 1 : 1,
+      })
+        .then((cartItem) => {
+          return res.redirect('back')
+        })
+    })
+  },
+  deleteCartItem: (req, res) => {
+    CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.destroy()
+        .then((cartItem) => {
+          return res.redirect('back')
+        })
     })
   }
 }
