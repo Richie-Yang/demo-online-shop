@@ -81,6 +81,26 @@ let orderController = {
       })
     })
   },
+
+  getPayment: (req, res) => {
+    const { id } = req.params
+    console.log('===== getPayment =====')
+    console.log(id)
+    console.log('==========')
+
+    return Order.findByPk(id, {})
+      .then(order => {
+        return res.render('payment', { order })
+      })
+  },
+  spgatewayCallback: (req, res) => {
+    console.log('===== spgatewayCallback =====')
+    console.log(req.body)
+    console.log('==========')
+
+    return res.redirect('back')
+  }
 }
+
 
 module.exports = orderController
