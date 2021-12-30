@@ -7,11 +7,16 @@ const session = require('express-session')
 const methodOverride = require('method-override')
 const { engine } = require('express-handlebars')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const PORT = process.env.PORT || 3000
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
